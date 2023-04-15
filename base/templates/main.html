@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<style type="text/css">
+
+		*{
+			margin:0px;
+			padding:0px;
+
+		}
+		
+		.main-content{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		/*body{
+			position: relative;
+			height:  120vh;
+		}*/
+
+		nav{
+			text-align: center;
+			padding-top:2vh;
+			padding-bottom:2vh;
+			background: #85b2d1;
+			font-size: 2rem;
+			color: white;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding-inline:1rem;
+		}
+
+		.modal-button{
+			color: #85b2d1;
+			width: 60px;
+			height: 60px;
+			background: white;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 3rem;
+			cursor: pointer;
+
+		}
+
+		.modal:hover{
+			box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+		}
+
+		.gallery{
+			
+			position: relative;
+			margin-top:4vh;
+			width: 90vw;
+			background: #85b2d1;
+			height: 80vh;
+			display: flex;
+			justify-content: space-around;
+			flex-wrap: wrap;
+			gap :0.5rem;
+		}
+
+		.image{
+			width: 20vw;
+			height: 40vh;
+			background: white;
+			transform: rotate(5deg);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-around;
+			box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+		}
+
+		.image:hover{
+
+			box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;	
+		}
+
+
+		img{
+			width: 80%;
+			height: 80%;
+
+		}
+
+		.modal {
+		  display: none; /* Hidden by default */
+		  position: fixed; /* Stay in place */
+		  z-index: 1; /* Sit on top */
+		  left: 0;
+		  top: 0;
+		  width: 100%; /* Full width */
+		  height: 100%; /* Full height */
+		  overflow: auto; /* Enable scroll if needed */
+		  background-color: rgb(0,0,0); /* Fallback color */
+		  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		  -webkit-animation-name: fadeIn; /* Fade in the background */
+		  -webkit-animation-duration: 0.4s;
+		  animation-name: fadeIn;
+		  animation-duration: 0.4s
+		}
+
+		/* Modal Content */
+		.modal-content {
+		  position: fixed;
+		  left: 20%;
+  		  top: 44%;
+		  background-color: #fefefe;
+		  width: 60%;
+		}
+
+		/* The Close Button */
+		.close {
+		  color: white;
+		  float: right;
+		  font-size: 28px;
+		  font-weight: bold;
+		}
+
+		.close:hover,
+		.close:focus {
+		  color: #000;
+		  text-decoration: none;
+		  cursor: pointer;
+		}
+
+		.modal-header {
+		  padding: 2px 16px;
+		  background: #85b2d1;
+		  color: white;
+		}
+
+		.modal-body {padding: 40px 30px;}
+
+		.modal-footer {
+		  padding: 2px 16px;
+		  background: #85b2d1;
+		  color: white;
+		}
+
+
+
+	</style>
+
+</head>
+<body>
+
+	<nav>
+		Photo Gallery
+
+		<span  id="myBtn" class="modal-button" >
+			+
+		</span>
+
+	</nav>
+
+	<div class="main-content" >
+		
+		<div class="gallery" >
+
+			{% for x in data %}
+	        
+	            <div class="image">
+					<img src="{{ x.photo.url }}">
+
+					<span>{{ x.title }}</span>
+
+				</div>
+	    
+	        {% endfor %}
+			
+
+		</div>	
+
+
+	</div>
+
+
+	<!-- <div class="popup-modal" >
+
+		<form method="POST" enctype="multipart/form-data">
+        	{% csrf_token %}
+        	{{ form.as_p }}
+        	<button type="submit"> Upload Image </button>
+    	</form>
+
+	</div> -->
+
+
+	<div id="myModal" class="modal">
+
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <span class="close">&times;</span>
+	      <h2>Upload Image</h2>
+	    </div>
+	    <div class="modal-body">
+	      <form method="POST" enctype="multipart/form-data">
+        	{% csrf_token %}
+        	{{ form.as_p }}
+
+        	<div class="modal-footer">
+	      		<button type="submit"> Upload Image </button>
+	    	</div>
+        	
+    	  </form>
+	    </div>
+	    
+	  </div>
+
+	</div>
+
+	
+
+
+</body>
+
+<script type="text/javascript">
+	var modal = document.getElementById("myModal");
+
+	// Get the button that opens the modal
+	var btn = document.getElementById("myBtn");
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks the button, open the modal 
+	btn.onclick = function() {
+	  modal.style.display = "block";
+	}
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+	  modal.style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+	  if (event.target == modal) {
+	    modal.style.display = "none";
+	  }
+	}
+
+
+</script>
+
+
+</html>
